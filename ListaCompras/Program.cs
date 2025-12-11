@@ -1,5 +1,19 @@
+using ListaCompras.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Registro do DbContext + Ativação dos logs do EF Core
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options
+        .UseMySql(
+            builder.Configuration.GetConnectionString("DefaultConnection"),
+            ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+        )
+        .EnableSensitiveDataLogging()
+        .LogTo(Console.WriteLine)
+);
 // Add services to the container.
 
 builder.Services.AddControllers();
