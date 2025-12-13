@@ -6,14 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Registro do DbContext + Ativação dos logs do EF Core
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options
-        .UseMySql(
-            builder.Configuration.GetConnectionString("DefaultConnection"),
-            ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-        )
-        .EnableSensitiveDataLogging()
-        .LogTo(Console.WriteLine)
-);
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+    options.UseMySql(
+        connectionString,
+        ServerVersion.AutoDetect(connectionString)
+    )
+    .EnableSensitiveDataLogging()
+    .LogTo(Console.WriteLine);
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
